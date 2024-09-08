@@ -40,11 +40,11 @@ class SmaCross(Strategy):
         # print(self.sma1[-1])
         # print(self.data.Close[-1])
         # print(self.sma1.diff())
-        if self.sma_delta > 0:
+        if self.sma_delta > 5:
             self.buy()
             if self.position and self.position.is_short:
                 self.position.close()
-        elif self.sma_delta < 0:
+        elif self.sma_delta < 5:
             self.sell()
             if self.position and self.position.is_long:
                 self.position.close()
@@ -58,15 +58,18 @@ class Test(Strategy):
         print(np.diff(self.sma1))
 
     def next(self):
+        # print(self.position.size)
         if self.sma_delta > 0:
-            self.buy()
+            if self.position.size <= 0:
+                self.buy()
             if self.position and self.position.is_short:
-                self.position.close()
+                self.position.close()   
         elif self.sma_delta < 0:
-            # self.sell()
+            if self.position.size >= 0:
+                self.sell()
             if self.position and self.position.is_long:
                 self.position.close()
-
+            
 
 
 #calculate KD signal with talib
