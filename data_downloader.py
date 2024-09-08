@@ -2,7 +2,7 @@ import twstock
 import pandas as pd
 # 導入twstock及pandas模組，pandas模組縮寫為pd
 
-target_stock = '2454'  #股票代號變數
+target_stock = '6271'  #股票代號變數
 stock = twstock.Stock(target_stock)  #告訴twstock我們要查詢的股票
 target_price = stock.fetch_from(2012, 5)  #取用2020/05至今每天的交易資料
 

@@ -5,13 +5,13 @@ import pandas as pd #引入pandas讀取股價歷史資料CSV檔
 import argparse
 
 class RightHandSide(Strategy):
-    n1 = 5
+    n = 5
     def init(self):
-        print(self.data)
+        print(self.closed_trades)
         close = self.data.Close
-        self.sma1 = self.I(SMA, close, self.n1)
-        self.sma_delta = np.diff(self.sma1)
-        print(np.diff(self.sma1))
+        self.sma = self.I(SMA, close, self.n)
+        self.sma_delta = np.diff(self.sma)
+        print(np.diff(self.sma))
 
     def next(self):
         if self.sma_delta > 0:
@@ -39,9 +39,8 @@ if __name__ == "__main__":
 
     df = pd.read_csv(f"./data/{stock}.csv", index_col=1)
     df.index = pd.to_datetime(df.index)
-    print(df.index)
+    df = df.interpolate()
     df.long_short = args.long_short
-    print(df.long_short)
     bt = Backtest(df, RightHandSide,
                 cash=args.initial_cash, commission=args.commision,
                 exclusive_orders=True)
